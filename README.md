@@ -27,7 +27,7 @@ The model never runs tools itself. It asks for a tool, my Python code runs it, a
 ## Setup
 
 ```bash
-git clone https://github.com/<your-username>/reel-factory.git
+git clone https://github.com/darshankrlo/reel-factory.git
 cd reel-factory
 python -m venv venv
 source venv/bin/activate
