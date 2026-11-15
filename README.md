@@ -4,10 +4,11 @@ An AI agent that researches a topic and writes a complete short-form reel packag
 
 ## What it does
 
-You type a topic. The agent:
+You type a topic, then pick a reel type, a tone and a length from menus. The agent then:
 1. Searches the web for the topic using a `search_trends` tool
-2. Writes a hook, a short script, a shot list and captions
-3. Saves everything to `output/reel.txt` using a `save_file` tool
+2. Writes a hook, a script sized to the chosen length, a shot list and captions
+3. Checks the hook with a `check_hook` tool and rewrites it until it passes
+4. Saves everything to `output/reel.txt` using a `save_file` tool
 
 ## How it works
 
@@ -17,6 +18,9 @@ The model never runs tools itself. It asks for a tool, my Python code runs it, a
 - The model decides when it's finished by replying with no tool request
 - A step cap (`range(8)`) stops a confused agent from looping forever
 - `save_file` only writes inside the `output/` folder
+- A system instruction holds the agent's standing rules (work order, never invent trend data), while the prompt carries what changes each run (topic, type, tone, length)
+- `check_hook` returns PASS or FAIL, and a FAIL goes back to the model so it can rewrite: a feedback loop
+- The reel length is turned into a word limit, because a model follows "at most 75 words" better than "30 seconds"
 
 `agent_v1.py` is the same agent using the SDK's automatic tool loop.
 
@@ -44,7 +48,7 @@ python agent_v2.py
 
 ## Files
 
-- `agent_v2.py`: the agent with a hand-written loop
+- `agent_v2.py`: the agent with a hand-written loop, three tools and menus
 - `agent_v1.py`: the agent using automatic tool calling
 - `hello.py`, `tool_test.py`: early experiments (first API call, first tool)
 - `list_models.py`: lists the models your key can use
